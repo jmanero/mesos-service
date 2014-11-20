@@ -18,7 +18,8 @@ default['zookeeper']['quorum_port'] = 2888
 default['zookeeper']['election_port'] = 3888
 
 ## Mesos
-default['mesos']['cluster_name'] = 'default'
+default['mesos']['home'] = '/opt/mesos'
 default['mesos']['logs'] = '/var/log/mesos'
-default['mesos']['log_level'] = 'INFO'
 default['mesos']['data'] = '/var/mesos'
+default['mesos']['cluster_name'] = 'default'
+default['mesos']['log_level'] = 'INFO'

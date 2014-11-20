@@ -16,26 +16,26 @@ package 'libsasl2-dev'
 package 'maven'
 
 %w(build build/log).each do |dir|
-  directory ::File.join('/opt/mesos/', dir) do
+  directory ::File.join(node['mesos']['home'], dir) do
     owner 'vagrant'
     recursive true
   end
 end
 
 execute 'mesos-build/configure' do
-  cwd '/opt/mesos/build'
+  cwd ::File.join(node['mesos']['home'], 'build')
   user 'vagrant'
   command '../configure > log/configure'
-  not_if { ::File.exist?('/opt/mesos/build/Makefile') }
+  not_if { ::File.exist?(::File.join(node['mesos']['home'], 'build/Makefile')) }
 end
 
 execute 'mesos-build/make' do
-  cwd '/opt/mesos/build'
+  cwd ::File.join(node['mesos']['home'], 'build')
   user 'vagrant'
   command 'make -j3 > log/make'
 end
 
 execute 'mesos-build/install' do
-  cwd '/opt/mesos/build'
+  cwd ::File.join(node['mesos']['home'], 'build')
   command 'make install > log/install'
 end
