@@ -23,4 +23,5 @@ exec /usr/local/sbin/mesos-slave\
       "#{ n }:#{ node['zookeeper']['config']['clientPort'] }"
     }.join(',') %>/mesos\
   --ip=<%= node['mesos']['address'] %>\
-  --hostname=<%= node['hostname'] %>
+  --hostname=<%= node['hostname'] %>\
+  --containerizers=docker,mesos

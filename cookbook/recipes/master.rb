@@ -13,6 +13,8 @@ end
 
 template '/etc/init/mesos-master.conf' do
   source 'mesos-master.upstart.erb'
+  notifies :stop, 'service[mesos-master]'
+  notifies :start, 'service[mesos-master]'
 end
 
 service 'mesos-master' do

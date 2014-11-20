@@ -87,7 +87,36 @@ EOF
   end
 
   ##
+  # Singularity
+  ##
+  config.vm.define 'singularity-0' do |singularity|
+    singularity.vm.box = 'mesos-0.20.0-ubuntu-14.04.1'
+    singularity.vm.hostname = 'singularity-0'
+    singularity.vm.network :private_network, :ip => '192.168.33.48'
+    singularity.vm.provider :virtualbox do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+    end
+
+    singularity.vm.provision :file,
+                             source: 'singularity-master.tar.gz',
+                             destination: '/opt/singularity.tar.gz'
+
+    singularity.vm.provision :chef_solo do |chef|
+      chef.log_level = :info
+      chef.node_name = 'singularity-0'
+      chef.run_list = ['recipe[mesos::singularity]']
+      chef.json = {
+        :zookeeper => {
+          :nodes => master_nodes
+        }
+      }
+    end
+  end
+
+  ##
   # Mesos Slaves
+  ##
   slave_nodes.each_with_index do |address, id|
     config.vm.define "slave-#{ id }" do |mesos|
       mesos.vm.box = 'mesos-0.20.0-ubuntu-14.04.1'
@@ -97,18 +126,6 @@ EOF
         vb.memory = 1024
         vb.cpus = 2
       end
-
-      ## Stop and disable chef-client if the box shipped with it
-      ##  configured as a service
-      mesos.vm.provision :shell, inline: <<EOF
-#!/bin/bash +ex
-chown vagrant /opt
-
-if [ -f /etc/init.d/chef-client ]; then
-  service chef-client stop
-  rm /etc/init.d/chef-client
-fi
-EOF
 
       mesos.vm.provision :chef_solo do |chef|
         chef.log_level = :debug

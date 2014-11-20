@@ -23,3 +23,13 @@ default['mesos']['logs'] = '/var/log/mesos'
 default['mesos']['data'] = '/var/mesos'
 default['mesos']['cluster_name'] = 'default'
 default['mesos']['log_level'] = 'INFO'
+
+## Singularity
+default['singularity']['port'] = 7099
+default['singularity']['home'] = '/opt/singularity'
+default['singularity']['log'] = '/var/log/singularity'
+default['singularity']['bin'] = '/usr/local/singularity/bin'
+default['singularity']['database']['host'] = 'localhost'
+default['singularity']['database']['port'] = 3306
+default['singularity']['database']['user'] = 'singularity'
+default['singularity']['database']['name'] = 'singularity'
