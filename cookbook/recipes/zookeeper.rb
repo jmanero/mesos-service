@@ -5,7 +5,7 @@
 # The MIT License (MIT)
 # Copyright (c) 2014 John Manero <john.manero@gmail.com>
 #
-include_recipe 'apt::default'
+include_recipe 'mesos::_base'
 package 'openjdk-7-jdk'
 
 directory node['zookeeper']['config']['dataDir']
@@ -19,19 +19,19 @@ end
 
 template '/opt/zookeeper/conf/zoo.cfg' do
   source 'zookeeper.cfg.erb'
-  owner 'vagrant'
+  owner 'mesos'
   notifies :restart, 'service[zookeeper]'
 end
 
 template '/opt/zookeeper/conf/zookeeper-env.sh' do
   source 'zookeeper-env.sh.erb'
-  owner 'vagrant'
+  owner 'mesos'
   notifies :restart, 'service[zookeeper]'
 end
 
 file ::File.join(node['zookeeper']['config']['dataDir'], 'myid') do
   content "#{ node['zookeeper']['id'] }"
-  owner 'vagrant'
+  owner 'mesos'
   notifies :restart, 'service[zookeeper]'
 end
 
