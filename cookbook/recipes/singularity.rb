@@ -59,7 +59,7 @@ end
 ###
 singularity_build_jar = ::File.join(
   node['singularity']['home'],
-  'SingularityService/target/SingularityService-0.3.9-shaded.jar'
+  'SingularityService/target/SingularityService-0.4.0-SNAPSHOT-shaded.jar'
 )
 singularity_jar = ::File.join(
   node['singularity']['bin'],
